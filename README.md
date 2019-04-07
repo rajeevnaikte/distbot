@@ -29,6 +29,6 @@ optional arguments:
                         Only run suites matching this value
 ```
 # Assistant mode
-There is an assistant library here to use during development. This program will keep the robot framework running, and allow you to type in the keywords from terminal/cmd prompt. It is a good tool for web-developers while coding to see the effect while trying out differnet logics.
+There is an assistant library here to use during development. This program will keep the robot framework running, and allow you to type in the keywords from terminal/cmd prompt. It is a good tool for web-developers while coding to see the effect while trying out differnet logics.<br/>
 Starting assistant is simply using keywork 'start assistant'. e.g. in this repo there is file Assistant/assistant.robot. Just run that - <br/>
 python distbot/distbot.py -e local -b ff Assistant
