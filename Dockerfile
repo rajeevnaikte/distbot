@@ -23,6 +23,7 @@ RUN apt-get install ca-certificates \
 
 RUN python -m pip install psutil
 RUN python -m pip install robotframework
+RUN python -m pip install robotframework-distbot
 RUN python -m pip install robotframework-seleniumlibrary
 RUN python -m pip install robotframework-databaselibrary
 RUN python -m pip install PyMySQL
@@ -32,7 +33,6 @@ RUN python -m pip install postgres
 RUN apt-get remove -y build-essential python-dev python-setuptools python-pip wget
 RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-ADD distbot/* /distbot/
 WORKDIR /tests
-ENTRYPOINT ["python", "/distbot/distbot.py"]
+ENTRYPOINT ["python", "distbot"]
 

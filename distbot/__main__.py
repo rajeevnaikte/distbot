@@ -119,7 +119,7 @@ class PhantomJS(object):
     def __del__(self):
         self.phantom.kill()
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(usage='-e ENV [options] main_suite [robot arguments]', add_help=True)
     parser.add_argument('-e', required=True, help='dev, stage, prod etc. This value will be available as variable ENV.')
     parser.add_argument('-b', required=False, help='This value will be available as variable BROWSER.')
@@ -149,3 +149,6 @@ if __name__ == '__main__':
         robotArgs += ['-v', 'REMOTEURL:'+remoteUrl]
     
     getattr(DistRoboRunner(args, robotArgs), args.mode, lambda: "Unkown run mode!")()
+
+if __name__ == '__main__':
+    main()
