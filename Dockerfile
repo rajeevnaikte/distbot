@@ -34,5 +34,5 @@ RUN apt-get remove -y build-essential python-dev python-setuptools python-pip wg
 RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 WORKDIR /tests
-ENTRYPOINT ["python", "distbot"]
+ENTRYPOINT ["python", "-m", "distbot"]
 

@@ -8,7 +8,7 @@ name = 'Rajeev Naik'
 address = name.lower().replace(' ', '')+'te'+chr(64)+'gmail.com'
 
 setup(name='robotframework-distbot',
-      version='0.1',
+      version='0.2',
       description='Distributed test executor for Robot Framework',
       long_description='With Distbot you can distribute tests into multiple machines/docker and save test execution time.',
       author=name,
@@ -27,4 +27,6 @@ setup(name='robotframework-distbot',
             'Framework :: Robot Framework'
       ],
       license='Apache License, Version 2.0',
+      scripts=[os.path.join('scripts', 'distbot'),
+               os.path.join('scripts', 'distbot.bat')],
       install_requires=['robotframework', 'psutil'])
