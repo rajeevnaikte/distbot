@@ -2,8 +2,9 @@ version: '3'
 services:
   distbot-dev-ff:
     volumes:
-    - /rn/distbot:/tests
+    - .:/tests
     network_mode: "host"
     image: rajeevnaikte/distbot
+    build: .
     command: -e dev -b headlessfirefox -u lll -p kkk --mode distributed --max-cpu-percent 80 --max-memory 1024 examples
     

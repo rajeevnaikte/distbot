@@ -5,8 +5,8 @@ import time
 import psutil
 import robot
 from multiprocessing import Process, Value, Lock
-from robot.parsing.model import TestData, TestDataDirectory
-from tasksdb import TasksDB
+from robot.parsing.model import TestCase, TestCaseSection
+from .tasksdb import TasksDB
 import logging
 
 class DistRoboRunner(object):
@@ -15,7 +15,7 @@ class DistRoboRunner(object):
         self.robotArgs = robotArgs
         if self.args.outputdir==None:
             self.args.outputdir='report'
-        self.robotArgs += ['-d',self.args.outputdir]
+        self.robotArgs += ['-d', self.args.outputdir]
 
     def sequential(self):
         if self.args.suite:
@@ -90,12 +90,12 @@ class DistRoboRunner(object):
             procsCount.value -= 1
 
     def getAllSuites(self):
-        root = TestData(parent=None, source=self.args.main_suite, 
+        root = TestCase(parent=None, source=self.args.main_suite,
                 include_suites=([] if self.args.suite==None else self.args.suite.split(',')))
         return self.traverseTestDataDir(root, '', [])
 
     def traverseTestDataDir(self, suite, path, suites):
-        if isinstance(suite, TestDataDirectory):
+        if isinstance(suite, TestCaseSection):
             for childSuite in suite.children:
                 self.traverseTestDataDir(childSuite, path + suite.name + '.', suites)
         else:
