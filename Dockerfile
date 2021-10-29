@@ -11,7 +11,7 @@ RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 RUN python3 --version
 
-ARG GECKODRIVER_VERSION=v0.23.0
+ARG GECKODRIVER_VERSION=v0.30.0
 RUN apt-get install ca-certificates \
   && wget --no-verbose --no-check-certificate -O /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz \
   && rm -rf /opt/geckodriver \
