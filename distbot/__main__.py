@@ -1,13 +1,11 @@
 import argparse
-import subprocess
 import os
 import time
 import psutil
 import robot
 from multiprocessing import Process, Value, Lock
-from robot.parsing.model import TestCase, TestCaseSection
+from robot.running.builder import TestSuiteBuilder
 from .tasksdb import TasksDB
-import logging
 
 class DistRoboRunner(object):
     def __init__(self, args, robotArgs):
@@ -90,41 +88,21 @@ class DistRoboRunner(object):
             procsCount.value -= 1
 
     def getAllSuites(self):
-        root = TestCase(parent=None, source=self.args.main_suite,
-                include_suites=([] if self.args.suite==None else self.args.suite.split(',')))
-        return self.traverseTestDataDir(root, '', [])
+        root = TestSuiteBuilder(included_suites=([] if self.args.suite==None else self.args.suite.split(','))).build(self.args.main_suite)
+        return self.traverseTestDataDir(root, [])
 
-    def traverseTestDataDir(self, suite, path, suites):
-        if isinstance(suite, TestCaseSection):
-            for childSuite in suite.children:
-                self.traverseTestDataDir(childSuite, path + suite.name + '.', suites)
+    def traverseTestDataDir(self, suite, suites):
+        if suite.suites:
+            for childSuite in suite.suites._items:
+                self.traverseTestDataDir(childSuite, suites)
         else:
-            suites += [path + suite.name]
+            suites += [suite.longname]
         return suites
-
-class PhantomJS(object):
-    def __init__(self):
-        import socket
-        from contextlib import closing
-        portNum = '2018'
-        with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
-            s.bind(('localhost', 0))
-            portNum = str(s.getsockname()[1])
-        self.phantom = subprocess.Popen(['phantomjs', '--webdriver='+portNum])
-        self.remoteUrl = 'http://localhost:'+portNum+'/'
-
-    def get(self):
-        return self.remoteUrl
-
-    def __del__(self):
-        self.phantom.kill()
 
 def main():
     parser = argparse.ArgumentParser(usage='-e ENV [options] main_suite [robot arguments]', add_help=True)
     parser.add_argument('-e', required=True, help='dev, stage, prod etc. This value will be available as variable ENV.')
     parser.add_argument('-b', required=False, help='This value will be available as variable BROWSER.')
-    parser.add_argument('-u', required=False, help='This value will be available as variable USERNAME.')
-    parser.add_argument('-p',required=False, help='This value will be available as variable PASSWORD.')
     parser.add_argument('--mode', required=False, choices=['sequential', 'distributed'], default='sequential')
     parser.add_argument('--max-cpu-percent', required=False, type=float, help='Program will stop spawning new process when cpu usage reaches this value.')
     parser.add_argument('--max-memory', required=False, type=int, help='Program will stop spawning new process when memory usage reaches this value.')
@@ -133,20 +111,10 @@ def main():
     parser.add_argument('-d', '--outputdir', required=False, help='Directory to save report files. Default is <working dir>/report')
     parser.add_argument('-s', '--suite', required=False, help='Only run suites matching this value.')
     args, robotArgs = parser.parse_known_args()
-    remoteUrl = 'False'
-    phantom = None
-    if args.b == 'phantomjs':
-        phantom = PhantomJS()
-        remoteUrl = phantom.get()
+
     robotArgs += ['-v', 'ENV:'+args.e]
     if args.b:
         robotArgs += ['-v', 'BROWSER:'+args.b]
-    if args.u:
-        robotArgs += ['-v', 'USERNAME:'+args.u]
-    if args.p:
-        robotArgs += ['-v', 'PASSWORD:'+args.p]
-    if remoteUrl:
-        robotArgs += ['-v', 'REMOTEURL:'+remoteUrl]
     
     getattr(DistRoboRunner(args, robotArgs), args.mode, lambda: "Unkown run mode!")()
 

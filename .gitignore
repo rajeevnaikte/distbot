@@ -104,3 +104,5 @@ venv.bak/
 .mypy_cache/
 
 report/
+drivers/
+.idea/

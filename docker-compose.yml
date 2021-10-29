@@ -6,5 +6,5 @@ services:
     network_mode: "host"
     image: rajeevnaikte/distbot
     build: .
-    command: -e dev -b headlessfirefox -u lll -p kkk --mode distributed --max-cpu-percent 80 --max-memory 1024 examples
+    command: -e dev -b headlessfirefox --mode distributed --max-cpu-percent 80 --max-memory 1024 examples
     

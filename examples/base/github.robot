@@ -29,7 +29,7 @@ Login to github
 	Login to github with user ${USERNAME} and password ${PASSWORD}
 
 Login to github with user ${username} and password ${password}
-	Open Browser  ${URL}  ${BROWSER}  ${SUITE NAME}  remote_url=${REMOTEURL}
+	Open Browser  ${URL}  ${BROWSER}  ${SUITE NAME}
 	Maximize Browser Window
 	Wait Until Page Contains Element  login_field
 	Input Text  login_field  ${username}
