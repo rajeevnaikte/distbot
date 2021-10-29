@@ -3,8 +3,6 @@ Distributed/parallel execution of Robot Framework test suites using multiple doc
 # Demo
 https://www.youtube.com/watch?v=KL4V0QkMMVc
 # How it works
-*This library is outdated and no longer work with latest version of robot framework.*
-
 Start multiple docker containers of <a href="https://hub.docker.com/r/rajeevnaikte/distbot">rajeevnaikte/distbot</a> (e.g. ```docker-compose up --scale=4```), with all pointing to a shared volume folder (please refer <a href="https://docs.docker.com/compose/compose-file/#volume-configuration-reference">docker-compose volumes</a> for configurations), where the robot framework test suites are stored, and set argument ```--mode distributed``` (e.g. in docker-compose.yml file). Each robot suite/file will be run in a separate process/container. This program will automatically distribute the suites among the docker containers and run in parallel (without need of a master node). Also, in each container multiple suites can be run in parallel as per the --max-* configurations mentioned below. Once all suites are completed, one of the container will execute ```rebot``` of robot framework to combine all the reports. The report will be stored in same shared volume folder (You can also specify different location using --outputdir <a href="http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#all-command-line-options">argument of robot frameowrk</a>).
 # Usage
 ```pip install robotframework-distbot```<br/>
