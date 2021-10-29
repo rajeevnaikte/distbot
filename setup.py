@@ -8,7 +8,7 @@ name = 'Rajeev Naik'
 address = name.lower().replace(' ', '')+'te'+chr(64)+'gmail.com'
 
 setup(name='robotframework-distbot',
-      version='0.2',
+      version='1.0',
       description='Distributed test executor for Robot Framework',
       long_description='With Distbot you can distribute tests into multiple machines/docker and save test execution time.',
       author=name,

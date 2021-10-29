@@ -87,7 +87,7 @@ class TasksDB(object):
             select ?,? 
             where not exists(select 1 from TaskGroups 
             where groupid=? and parentGroupId=?);''', (taskGroup,parentGroup,taskGroup,parentGroup))
-            if isinstance(task, basestring) or isinstance(task, str) or isinstance(task, unicode):
+            if isinstance(task, str):
                 self.conn.execute('insert into Tasks(task,groupid) values (?,?);', (task,taskGroup))
             else:
                 nextGroup = self.parseTasks(task, nextGroup, taskGroup)
@@ -129,7 +129,7 @@ class TasksDB(object):
             self.conn.execute('update Tasks set status=2 where rowid=?;', (task,))
         groupId = self.conn.execute('select groupid from Tasks where rowid=?;', (task,)).fetchall()[0][0]
         rows = self.conn.execute('select 1 from Tasks where groupid=? and status is not 2', (groupId,)).fetchall()
-        if len(rows) is 0:
+        if len(rows) == 0:
             with self.conn:
                 self.conn.execute('''update TaskGroups set status=2 
                 where groupid=?;''', (groupId,))

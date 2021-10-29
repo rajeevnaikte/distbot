@@ -19,8 +19,6 @@ optional arguments:
   -h, --help            show this help message and exit
   -e E                  dev, stage, prod etc. This value will be available as variable ENV.
   -b B                  This value will be available as variable BROWSER.
-  -u U                  This value will be available as variable USERNAME.
-  -p P                  This value will be available as variable PASSWORD.
   --mode {sequential,distributed}
   --max-cpu-percent MAX_CPU_PERCENT
                         Program will stop spawning new process when cpu usage reaches this value.
