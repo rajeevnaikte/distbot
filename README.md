@@ -1,5 +1,5 @@
 # distbot
-Distributed/parallel execution of Robot Framework test suites using multiple docker containers
+Distributed/parallel execution of Robot Framework (RF) test suites using multiple docker containers
 # Demo
 https://www.youtube.com/watch?v=KL4V0QkMMVc
 # How it works
@@ -9,6 +9,11 @@ Start multiple docker containers of <a href="https://hub.docker.com/r/rajeevnaik
 Run the docker container or ```python -m distbot``` with -h argument to see all options of the progam.<br/>
 ```
 usage: -e ENV [options] main_suite [robot arguments]
+Explanation: first give options from below list as per your need (these are specific to this library),
+next give main suite name (folder name), next give RF arguments as per your needs (these are RF specific as mentioned in thier guide).
+If there is a conflicting options between this library and RF, then you can use full name for that option in RF.
+E.g. -e is used by this library for ENV, but RF as well has it for exclude option. So you can use --exclude for RF.
+i.e. -e ENV my_suite --exclude something
 
 positional arguments:
   main_suite            Folder name containing all the robot framework scripts.
